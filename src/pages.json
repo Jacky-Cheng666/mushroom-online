@@ -1,16 +1,86 @@
 {
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
 		{
-			"path": "pages/index/index",
+			"path": "pages/login/index",
 			"style": {
-				"navigationBarTitleText": "uni-app"
+				"navigationBarTitleText": "登录"
+			}
+		},
+		{
+			"path": "pages/phone-login/index",
+			"style": {
+				"navigationBarTitleText": "手机登录"
+			}
+		},
+		{
+			"path": "pages/search/index",
+			"style": {
+				"navigationBarTitleText": "搜索"
+			}
+		},
+		{
+			"path": "pages/home/index",
+			"style": {
+				"navigationBarTitleText": "首页"
+			}
+		},
+		{
+			"path": "pages/course/index",
+			"style": {
+				"navigationBarTitleText": "课程列表"
+			}
+		},
+		{
+			"path": "pages/study/index",
+			"style": {
+				"navigationBarTitleText": "学习"
+			}
+		},
+		{
+			"path": "pages/my/index",
+			"style": {
+				"navigationBarTitleText": "我的",
+				"navigationBarBackgroundColor": "#ff9a29",
+				"navigationBarTextStyle": "white"
 			}
 		}
 	],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
-		"navigationBarTitleText": "uni-app",
+		"navigationBarTitleText": "酷丁鱼课堂",
 		"navigationBarBackgroundColor": "#F8F8F8",
 		"backgroundColor": "#F8F8F8"
+	},
+	"tabBar": {
+		"color": "#999",
+		"selectedColor": "#ff9a29",
+		"borderStyle": "black",
+		"backgroundColor": "#ffffff",
+		"list": [
+			{
+				"pagePath": "pages/home/index",
+				"iconPath": "static/tabs/icon_home@2x.png",
+				"selectedIconPath": "static/tabs/icon_home_selected@2x.png",
+				"text": "首页"
+			},
+			{
+				"pagePath": "pages/course/index",
+				"iconPath": "static/tabs/icon_course@2x.png",
+				"selectedIconPath": "static/tabs/icon_course_selected@2x.png",
+				"text": "课程"
+			},
+			{
+				"pagePath": "pages/study/index",
+				"iconPath": "static/tabs/icon_study@2x.png",
+				"selectedIconPath": "static/tabs/icon_study_selected@2x.png",
+				"text": "学习"
+			},
+			{
+				"pagePath": "pages/my/index",
+				"iconPath": "static/tabs/icon_my@2x.png",
+				"selectedIconPath": "static/tabs/icon_my_selected@2x.png",
+				"text": "我的"
+			}
+		]
 	}
 }
