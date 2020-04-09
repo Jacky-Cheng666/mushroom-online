@@ -43,6 +43,12 @@
 				"navigationBarBackgroundColor": "#ff9a29",
 				"navigationBarTextStyle": "white"
 			}
+		},
+		{
+			"path": "pages/course-detail/index",
+			"style": {
+				"navigationBarTitleText": "课程详情"
+			}
 		}
 	],
 	"globalStyle": {

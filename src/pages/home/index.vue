@@ -92,6 +92,13 @@ export default {
       url: "home/video"
     });
     this.videos = res2.data.message;
+  },
+  methods: {
+    goToCoursePage() {
+      uni.switchTab({
+        url: "/pages/course/index"
+      });
+    }
   }
 };
 </script>
