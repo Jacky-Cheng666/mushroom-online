@@ -37,20 +37,20 @@
       <view class="head">
         <text
           @click="toggleSelect(index)"
-          :class="{active:selectIndex===index}"
+          :class="{active:currentIndex===index}"
           v-for="(item,index) in menus"
           :key="index"
         >{{item}}</text>
       </view>
       <view class="body">
-        <view class="catelog-container" v-if="selectIndex === 0">
+        <view class="catelog-container" v-if="currentIndex === 0">
           <text
             v-for="(item,index) in course_detail.videos"
             :key="item.id"
           >{{index+1}}.{{item.name}}</text>
           <text v-if="!course_detail.videos">暂无课程视频哦，请联系客服添加~</text>
         </view>
-        <view class="lecturer-container" v-else-if="selectIndex === 1">
+        <view class="lecturer-container" v-else-if="currentIndex === 1">
           <view v-if="course_detail.lecturer" class="info">
             <image :src="course_detail.lecturer.avatar" alt />
             <view class="name-follow">
@@ -59,7 +59,7 @@
             </view>
             <text
               @click="followOrUnFollow(course_detail.lecturer.is_follow,course_detail.lecturer.id)"
-              :class="[course_detail.lecturer.is_follow === 1 ? 'follow' : 'unfollow']"
+              :class="course_detail.lecturer.is_follow === 1 ? 'follow' : 'unfollow'"
             >{{course_detail.lecturer.is_follow === 1 ? '已关注' : '关注'}}</text>
           </view>
           <view v-if="course_detail.lecturer" class="introduce">
@@ -110,7 +110,9 @@ export default {
   data() {
     return {
       course_detail: "",
-      isPlaying: false
+      isPlaying: false,
+      menus: ["目录", "讲师介绍", "评价"],
+      currentIndex: 0 //当前选中的索引。
     };
   },
   async onLoad(option) {
@@ -122,10 +124,60 @@ export default {
     });
     // console.log(res);
     this.course_detail = res.data.message;
+    this.menus[2] = `评价(${res.data.message.commentTotal})`;
   },
   methods: {
     playCourseVideo() {
       this.isPlaying = true;
+    },
+    // 分享自定义
+    onShareAppMessage() {
+      return {
+        title: "这是一个分享的课程"
+      };
+    },
+    toggleSelect(index) {
+      this.currentIndex = index;
+    },
+    // 关注与取消关注
+    followOrUnFollow(is_follow, lecturer_id) {
+      if (is_follow == 0) {
+        // 关注事件
+        uniRequest({
+          url: "lecturer/follow",
+          data: {
+            lecturer_id
+          },
+          method: "POST"
+        }).then(res => {
+          if (res.data.status == 0) {
+            uni.showToast({
+              title: "关注成功",
+              duration: 1000,
+              icon: "none"
+            });
+            this.course_detail.lecturer.is_follow = 1;
+          }
+        });
+      } else {
+        // 取消关注讲师
+        uniRequest({
+          url: "lecturer/unfollow",
+          data: {
+            lecturer_id
+          },
+          method: "POST"
+        }).then(res => {
+          if (res.data.status == 0) {
+            uni.showToast({
+              title: "取消关注成功",
+              duration: 1000,
+              icon: "none"
+            });
+            this.course_detail.lecturer.is_follow = 0;
+          }
+        });
+      }
     }
   }
 };

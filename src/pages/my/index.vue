@@ -51,11 +51,11 @@ export default {
       userInfo: ""
     };
   },
-  async onLoad() {
+  async onShow() {
     let res = await uniRequest({
       url: "my/info"
     });
-    console.log(res);
+    // console.log(res);
     this.userInfo = res.data.message;
   },
   methods: {
