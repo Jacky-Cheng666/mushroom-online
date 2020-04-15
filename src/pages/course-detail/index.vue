@@ -12,7 +12,7 @@
       </view>
       <!-- 视频组件 -->
       <view v-else class="course_video">
-        <video id="courseVideoId" :src="course_detail.course.course_video_url"></video>
+        <video autoplay id="courseVideoId" :src="course_detail.course.course_video_url"></video>
       </view>
     </view>
     <!-- 2.0 简介 -->
@@ -23,7 +23,8 @@
       </view>
       <text class="introduce">{{course_detail.course.introduction}}</text>
       <view class="star">
-        <star :score="course_detail.course.score"></star>
+        <!-- 引用星星  -->
+        <uni-rate class="com-star" :disabled="true" size="18" :value="course_detail.course.score"></uni-rate>
         <text>{{course_detail.course.study_count}}人在学</text>
       </view>
       <view class="study-share">
@@ -101,7 +102,11 @@
 
 <script>
 import uniRequest from "@/utils/uniRequest";
+import { uniRate } from "@dcloudio/uni-ui";
 export default {
+  components: {
+    uniRate
+  },
   data() {
     return {
       course_detail: "",
@@ -205,6 +210,9 @@ export default {
         margin-left: 20rpx;
         font-size: 12px;
         color: #fe8e38;
+      }
+      .com-star {
+        margin-top: 22rpx;
       }
     }
     .study-share {

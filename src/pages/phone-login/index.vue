@@ -24,7 +24,7 @@ export default {
     return {
       isCountDown: false, //是否正在倒计时
       tips: 10,
-      phone: "",
+      phone: "17704051019",
       timerID: null,
       vcode: ""
     };
