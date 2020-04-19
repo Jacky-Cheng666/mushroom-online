@@ -36,7 +36,7 @@ export default {
       studyProgresses: []
     };
   },
-  async onLoad() {
+  async onShow() {
     let res = await uniRequest({
       url: "study/progress"
     });

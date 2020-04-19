@@ -49,6 +49,18 @@
 			"style": {
 				"navigationBarTitleText": "课程详情"
 			}
+		},
+		{
+			"path": "pages/play/index",
+			"style": {
+				"navigationBarTitleText": "课程学习"
+			}
+		},
+		{
+			"path": "pages/pay/index",
+			"style": {
+				"navigationBarTitleText": "确认订单"
+			}
 		}
 	],
 	"globalStyle": {

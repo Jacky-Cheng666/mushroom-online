@@ -75,7 +75,8 @@
                 <view class="nickname">
                   <view style="margin-top:12rpx;">{{item.nickname}}</view>&nbsp;&nbsp;
                   <view style="margin-left:20rpx">
-                    <star :score="item.score" />
+                    <!-- 评分组件 -->
+                    <uni-rate :disabled="true" size="16" :value="item.score"></uni-rate>
                   </view>
                 </view>
                 <view>{{item.content}}</view>
@@ -178,6 +179,52 @@ export default {
           }
         });
       }
+    },
+    // 点赞评论
+    async like(item) {
+      if (item.is_like == 1) {
+        // 点赞
+        let res = await uniRequest({
+          url: "comment/like",
+          method: "POST",
+          data: {
+            comment_id: item.id,
+            is_like: 2
+          }
+        });
+        if (res.data.status == 0) {
+          uni.showToast({
+            title: "点赞成功",
+            duration: 1000,
+            icon: "none"
+          });
+          item.is_like = 2;
+        }
+      } else {
+        // 取消点赞
+        let res = await uniRequest({
+          url: "comment/like",
+          method: "POST",
+          data: {
+            comment_id: item.id,
+            is_like: 1
+          }
+        });
+        if (res.data.status == 0) {
+          uni.showToast({
+            title: "取消点赞成功",
+            duration: 1000,
+            icon: "none"
+          });
+          item.is_like = 1;
+        }
+      }
+    },
+    // 跳转到开始学习页面
+    goToStudy() {
+      uni.navigateTo({
+        url: `/pages/play/index?id=${this.course_detail.course.id}`
+      });
     }
   }
 };
