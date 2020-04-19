@@ -17,17 +17,18 @@
       <view class="comment">
         <image @click="evaluate" src="/static/images/evaluate@2x.png" alt />
       </view>
-      <!-- <Modal @postComment="postComment" :visible="isShowCommentModal" @close="closeModal">
+      <!-- 引入自定义的模态框组件 -->
+      <modal @postComment="commit" @close="closeModal" title="请输入评论内容" :visible="isShow">
         <view class="comment-content">
-          <textarea v-model="content" placeholder="请输入评论内容哦~" rows="5"></textarea>
-        </view>
-        <view style="margin-top:10rpx;">
-          <text>评分：</text>
-          <view style="float:right;margin-right:300rpx;margin-top:-5rpx;">
-            <Star @changeScore="getChangeSocre" :readonly="false" />
+          <!-- 文本域模块 -->
+          <textarea v-model="content" rows="5"></textarea>
+          <!-- star评级组件 -->
+          <view style="margin-top:10rpx;position:relative">
+            <text>评分：</text>
+            <uni-rate @change="changeRate" class="sub-star" size="18" :value="3"></uni-rate>
           </view>
         </view>
-      </Modal>-->
+      </modal>
     </view>
     <!-- 3.0 课程进度 -->
     <view class="course-progress">
@@ -49,8 +50,14 @@
 </template>
 
 <script>
+import { uniRate } from "@dcloudio/uni-ui";
 import uniRequest from "@/utils/uniRequest";
+import modal from "@/components/modal/index.vue";
 export default {
+  components: {
+    modal,
+    uniRate
+  },
   data() {
     return {
       // 课程id
@@ -60,7 +67,13 @@ export default {
       playingUrl: "", //正在播放的视频url
       // 默认选中哪个课程
       playIndex: 0,
-      play_status: 0
+      play_status: 0,
+      // 是否展示模态框组件
+      isShow: false,
+      // 评级分数
+      score: 0,
+      // 评价的内容
+      content: ""
     };
   },
   filters: {
@@ -163,6 +176,59 @@ export default {
             }
           }
         });
+      }
+    },
+    // 4，评价按钮点击事件
+    async evaluate() {
+      let res = await uniRequest({
+        url: "study/complete",
+        data: {
+          course_id: this.id
+        }
+      });
+      console.log("评价", res);
+      if (res.data.status == 0) {
+        if (!res.data.complete) {
+          // 如果还没学习完，给出提示
+          return uni.showModal({
+            content: "请学习完课程后再来评价",
+            showCancel: false,
+            confirmColor: "#ff9a29"
+          });
+        }
+        // 如果学习完了，弹出评价框
+        console.log("学习完毕");
+
+        this.isShow = true;
+      }
+    },
+    // 5，星星数量改变事件
+    changeRate(value) {
+      this.score = value.value;
+    },
+    closeModal(val) {
+      this.isShow = val;
+    },
+    // 7，提交评论
+    async commit() {
+      let res = await uniRequest({
+        url: "comment/create",
+        method: "POST",
+        data: {
+          course_id: this.id,
+          content: this.content,
+          score: this.score
+        }
+      });
+      console.log("提交评论", res);
+      if (res.data.status == 0) {
+        uni.showToast({
+          title: "评论成功",
+          duration: 2000
+        });
+
+        // 关闭对话框
+        this.isShow = false;
       }
     }
   }
@@ -303,5 +369,10 @@ export default {
     width: 100%;
     height: 200rpx;
   }
+}
+.sub-star {
+  position: absolute;
+  top: 18rpx;
+  left: 98rpx;
 }
 </style>

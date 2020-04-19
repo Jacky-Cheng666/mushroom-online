@@ -1,4 +1,4 @@
-const BASEURL: string = "http://172.20.10.4:3000/api/";
+const BASEURL: string = "http://106.52.57.152:3000/api/";
 const uniRequest = ({ url = "", method = 'GET', data = {}, tipName = '加载中...' }) => {
     // 封装的request方法，里面要返回一个promise对象。
     return new Promise((resolve, reject) => {
